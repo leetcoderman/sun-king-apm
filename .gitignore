@@ -1,0 +1,9 @@
+# Exclude internal graph/debug output
+graphify-out/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
