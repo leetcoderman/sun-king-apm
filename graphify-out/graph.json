@@ -1,0 +1,562 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "created_at": "2026-07-13T21:18:53+05:30",
+    "source_path": "/Users/dexter/Downloads/ag-interview-space/job-applications/sun-king/website",
+    "total_files": 3,
+    "total_words": 4850,
+    "tool": "graphify (manual extraction)"
+  },
+  "nodes": [
+    {
+      "id": "file_index_html",
+      "label": "index.html",
+      "type": "file",
+      "file_type": "code",
+      "source_file": "index.html",
+      "language": "html",
+      "lines": 360,
+      "bytes": 26206,
+      "summary": "Main HTML document for Shikhar Gupta's Sun King APM application website. Single-page layout with 4 major sections: Navigation, Hero/Home, Video/Projects, Footer.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "file_styles_css",
+      "label": "styles.css",
+      "type": "file",
+      "file_type": "code",
+      "source_file": "styles.css",
+      "language": "css",
+      "lines": 1010,
+      "bytes": 22316,
+      "summary": "Complete CSS design system using CSS custom properties. Implements Sun King gold-on-dark brand palette, responsive breakpoints at 768px and 480px, glassmorphism effects, and scroll-triggered animations.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "file_script_js",
+      "label": "script.js",
+      "type": "file",
+      "file_type": "code",
+      "source_file": "script.js",
+      "language": "javascript",
+      "lines": 167,
+      "bytes": 5470,
+      "summary": "Client-side JavaScript handling navigation, scroll animations (IntersectionObserver), video fallback logic, and active nav link tracking. No external dependencies.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "section_nav",
+      "label": "Navigation",
+      "type": "component",
+      "source_file": "index.html",
+      "source_location": "L21-L42",
+      "summary": "Fixed top navbar with logo 'SG', 3 nav links (Home, Video, Projects), hamburger toggle for mobile, and a full-screen mobile nav overlay.",
+      "dom_ids": ["navbar", "nav-links", "nav-toggle", "mobile-nav"],
+      "css_classes": ["nav-container", "nav-logo", "nav-links", "nav-link", "nav-toggle", "mobile-nav", "mobile-nav-link"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "section_hero",
+      "label": "Hero / Home Section",
+      "type": "component",
+      "source_file": "index.html",
+      "source_location": "L47-L112",
+      "summary": "Full-viewport hero with ambient gold glows, profile picture (with fallback initials 'SG'), name/title, 3-paragraph bio, 4 action buttons (LinkedIn, GitHub, Portfolio, Resume), and scroll indicator.",
+      "dom_ids": ["home", "profile-pic", "profile-pic-fallback"],
+      "css_classes": ["hero-section", "hero-glow", "hero-glow-secondary", "hero-content", "profile-card", "profile-pic-wrapper", "profile-pic", "profile-pic-fallback", "profile-pic-ring", "hero-name", "hero-subtitle", "hero-divider", "hero-bio", "hero-buttons", "btn", "btn-outline", "scroll-indicator"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "section_video",
+      "label": "Video Section (Deliverable 1)",
+      "type": "component",
+      "source_file": "index.html",
+      "source_location": "L117-L147",
+      "summary": "Project walkthrough video section tagged 'Deliverable 1'. Contains a 16:9 video player for 'walkthrough.mp4' with a styled fallback overlay that shows when the video isn't available.",
+      "dom_ids": ["video", "walkthrough-video-wrapper", "walkthrough-video", "walkthrough-fallback"],
+      "css_classes": ["video-section", "video-card", "video-wrapper", "video-fallback", "video-fallback-icon", "video-fallback-text", "video-context"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "section_projects",
+      "label": "Projects Section (Deliverable 2)",
+      "type": "component",
+      "source_file": "index.html",
+      "source_location": "L152-L336",
+      "summary": "Contains bridge blockquote, 5 project cards in a responsive grid, a portfolio CTA card, a featured build (dexterAI) video subsection, and a 'More About My Work' platforms grid with 3 placeholder cards.",
+      "dom_ids": ["projects", "dexter-video-wrapper", "dexter-video", "dexter-fallback"],
+      "css_classes": ["projects-section", "bridge-block", "bridge-quote", "projects-grid", "project-card", "project-number", "project-title", "project-desc", "project-links", "project-link", "project-link--private", "project-card--cta", "project-cta-inner", "project-cta-arrow", "dexter-video-section", "platforms-section", "platforms-grid", "platform-card", "platform-image", "platform-image-placeholder", "platform-info"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "section_footer",
+      "label": "Footer",
+      "type": "component",
+      "source_file": "index.html",
+      "source_location": "L341-L355",
+      "summary": "Site footer with 'SG' logo, tagline, external links (GitHub, LinkedIn, Portfolio, Email), and copyright notice.",
+      "css_classes": ["site-footer", "footer-container", "footer-brand", "footer-logo", "footer-tagline", "footer-links", "footer-copy"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "design_tokens",
+      "label": "Design Tokens (:root)",
+      "type": "design_system",
+      "source_file": "styles.css",
+      "source_location": "L4-L53",
+      "summary": "CSS custom properties defining the entire visual language. Gold brand palette (--gold-primary: #CC9900 through --gold-glow), dark neutrals (--bg-body: #0A0A0A), spacing scale (xs to 2xl), typography scale (xs to 4xl), radius scale, and transition easing.",
+      "tokens": {
+        "colors_brand": ["--gold-primary: #CC9900", "--gold-bright: #FFE000", "--gold-soft: #FFF15F", "--gold-muted: #B8860B", "--gold-dim: rgba(204,153,0,0.15)", "--gold-glow: rgba(204,153,0,0.25)"],
+        "colors_neutral": ["--bg-body: #0A0A0A", "--bg-section: #0D0D0D", "--bg-card: #161616", "--bg-card-hover: #1C1C1C", "--bg-nav: rgba(10,10,10,0.85)"],
+        "colors_text": ["--text-primary: #F5F5F0", "--text-secondary: #A0A0A0", "--text-muted: #666666"],
+        "colors_border": ["--border-subtle: rgba(255,255,255,0.06)", "--border-gold: rgba(204,153,0,0.3)"],
+        "spacing": ["--space-xs: 0.5rem", "--space-sm: 1rem", "--space-md: 1.5rem", "--space-lg: 2.5rem", "--space-xl: 4rem", "--space-2xl: 6rem"],
+        "font_sizes": ["--font-size-xs: 0.75rem", "--font-size-sm: 0.875rem", "--font-size-base: 1rem", "--font-size-lg: 1.125rem", "--font-size-xl: 1.5rem", "--font-size-2xl: 2rem", "--font-size-3xl: 2.75rem", "--font-size-4xl: 3.5rem"],
+        "radii": ["--radius-sm: 8px", "--radius-md: 12px", "--radius-lg: 16px", "--radius-xl: 24px"],
+        "misc": ["--transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1)", "--max-width: 1100px", "--font-family: Inter, -apple-system, ..."]
+      },
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "css_animations",
+      "label": "CSS Animations",
+      "type": "design_system",
+      "source_file": "styles.css",
+      "source_location": "multiple",
+      "summary": "Four keyframe animations: glowPulse (L327-330, hero ambient glow), ringPulse (L394-397, profile ring), bounce (L496-499, scroll arrow), heroFadeIn (L918-921, initial hero reveal). Plus the .fade-up class (L901-911) that drives scroll-triggered reveal via JS.",
+      "animations": ["glowPulse", "ringPulse", "bounce", "heroFadeIn"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "css_responsive",
+      "label": "Responsive Breakpoints",
+      "type": "design_system",
+      "source_file": "styles.css",
+      "source_location": "L926-L1009",
+      "summary": "Two breakpoints: 768px (tablet — hides desktop nav, shows hamburger, collapses grids to single-column, reduces font sizes) and 480px (mobile — stacks hero buttons vertically, shrinks profile picture from 130px to 100px).",
+      "breakpoints": ["768px", "480px"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "fn_init_navigation",
+      "label": "initNavigation()",
+      "type": "function",
+      "source_file": "script.js",
+      "source_location": "L15-L63",
+      "summary": "Sets up: (1) sticky nav background change on scroll >50px, (2) hamburger toggle opening mobile overlay + locking body scroll, (3) auto-close mobile nav on link click, (4) smooth scrolling with 64px offset for all #anchor links.",
+      "dom_dependencies": ["#navbar", "#nav-toggle", "#mobile-nav", ".mobile-nav-link", "a[href^='#']"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "fn_init_scroll_animations",
+      "label": "initScrollAnimations()",
+      "type": "function",
+      "source_file": "script.js",
+      "source_location": "L68-L89",
+      "summary": "Uses IntersectionObserver (threshold 0.1, rootMargin '0px 0px -50px 0px') to add .visible class to .fade-up elements (excluding hero section). Observer unobserves after triggering (one-shot).",
+      "dom_dependencies": [".fade-up:not(.hero-section .fade-up)"],
+      "css_dependencies": [".fade-up", ".fade-up.visible"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "fn_init_video_fallbacks",
+      "label": "initVideoFallbacks()",
+      "type": "function",
+      "source_file": "script.js",
+      "source_location": "L94-L137",
+      "summary": "Initializes fallback overlays for both videos. Delegates to setupVideoFallback() which listens for loadedmetadata/canplay (hide fallback) and error events (show fallback), plus a 3-second timeout to show fallback if readyState < 1.",
+      "dom_dependencies": ["#walkthrough-video", "#walkthrough-fallback", "#dexter-video", "#dexter-fallback"],
+      "calls": ["setupVideoFallback"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "fn_setup_video_fallback",
+      "label": "setupVideoFallback()",
+      "type": "function",
+      "source_file": "script.js",
+      "source_location": "L99-L137",
+      "summary": "Generic video fallback handler. Takes videoId and fallbackId, listens for media events to toggle .hidden class on fallback overlay. Includes 3-second timeout safety net.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "fn_init_active_nav_tracking",
+      "label": "initActiveNavTracking()",
+      "type": "function",
+      "source_file": "script.js",
+      "source_location": "L142-L166",
+      "summary": "Uses IntersectionObserver (threshold 0.3, rootMargin '-64px 0px -40% 0px') on all section[id] elements to toggle .active class on matching .nav-link elements.",
+      "dom_dependencies": ["section[id]", ".nav-link"],
+      "css_dependencies": [".nav-link.active"],
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "asset_profile_pic",
+      "label": "assets/profile-pic.jpg",
+      "type": "asset",
+      "source_file": "assets/profile-pic.jpg",
+      "summary": "Profile photograph displayed in the hero section. Has JS fallback that shows 'SG' initials div if image fails to load.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "asset_walkthrough_mp4",
+      "label": "assets/walkthrough.mp4",
+      "type": "asset",
+      "source_file": "assets/walkthrough.mp4",
+      "summary": "CRM redesign project walkthrough video, 4-minute duration, displayed in the Video section.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "asset_dexterai_mp4",
+      "label": "assets/dexterai.mp4",
+      "type": "asset",
+      "source_file": "assets/dexterai.mp4",
+      "summary": "dexterAI demo video displayed in the Featured Build subsection within Projects.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "asset_platform_images",
+      "label": "assets/images/platform-{1,2,3}.png",
+      "type": "asset",
+      "source_file": "assets/images/",
+      "summary": "Three placeholder platform screenshot images. Currently empty directory — images not yet added. The platform cards show 'Image coming soon' fallback via onerror handler.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "project_dexterai",
+      "label": "Project: dexterAI",
+      "type": "content_entity",
+      "source_file": "index.html",
+      "source_location": "L169-L180",
+      "summary": "Project #1. Local-first desktop AI workbench. Multi-provider LLM streaming, evaluations, autonomous agent. Links to github.com/leetcoderman/dexterAI.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "project_telegram_bid",
+      "label": "Project: Telegram Bid Marketplace",
+      "type": "content_entity",
+      "source_file": "index.html",
+      "source_location": "L182-L193",
+      "summary": "Project #2. Upload images on Telegram, AI generates product summaries, webapp for bidding with auth. Links to github.com/leetcoderman/Telegram-bid-marketplace.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "project_whatsapp",
+      "label": "Project: WhatsApp Group Prompting",
+      "type": "content_entity",
+      "source_file": "index.html",
+      "source_location": "L195-L206",
+      "summary": "Project #3. AI agents in WhatsApp group with DB access + Google LLM APIs. Private — client safety.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "project_pgc",
+      "label": "Project: Client Websites — PGC",
+      "type": "content_entity",
+      "source_file": "index.html",
+      "source_location": "L208-L227",
+      "summary": "Project #4. Website for Pratibha Gupta Classes. Links to 2 Vercel prototypes and GitHub repo.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "project_pragmatix",
+      "label": "Project: Pragmatix Internship",
+      "type": "content_entity",
+      "source_file": "index.html",
+      "source_location": "L229-L240",
+      "summary": "Project #5. D2C coaching validation website built with AI tools. Private — client safety.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "external_google_fonts",
+      "label": "Google Fonts (Inter)",
+      "type": "dependency",
+      "source_file": "index.html",
+      "source_location": "L11-L13",
+      "summary": "External dependency: Inter font family loaded from Google Fonts CDN. Weights: 300,400,500,600,700,800.",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "seo_meta",
+      "label": "SEO & Meta Tags",
+      "type": "metadata",
+      "source_file": "index.html",
+      "source_location": "L4-L10",
+      "summary": "Title: 'Shikhar Gupta — Sun King APM Application'. Meta description and OG tags present. No favicon or canonical URL defined.",
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file_index_html",
+      "target": "file_styles_css",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L14",
+      "detail": "<link rel='stylesheet' href='styles.css'>"
+    },
+    {
+      "source": "file_index_html",
+      "target": "file_script_js",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L357",
+      "detail": "<script src='script.js'>"
+    },
+    {
+      "source": "file_index_html",
+      "target": "external_google_fonts",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L11-L13",
+      "detail": "Google Fonts CDN link for Inter"
+    },
+    {
+      "source": "file_script_js",
+      "target": "section_nav",
+      "relation": "manipulates",
+      "confidence": "EXTRACTED",
+      "detail": "initNavigation() queries and controls all nav DOM elements"
+    },
+    {
+      "source": "fn_init_navigation",
+      "target": "section_nav",
+      "relation": "controls",
+      "confidence": "EXTRACTED",
+      "detail": "Manages scroll state, hamburger toggle, mobile overlay, smooth scroll"
+    },
+    {
+      "source": "fn_init_scroll_animations",
+      "target": "css_animations",
+      "relation": "triggers",
+      "confidence": "EXTRACTED",
+      "detail": "Adds .visible class to .fade-up elements, which triggers CSS transitions"
+    },
+    {
+      "source": "fn_init_video_fallbacks",
+      "target": "fn_setup_video_fallback",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_location": "script.js:L95-L96"
+    },
+    {
+      "source": "fn_init_video_fallbacks",
+      "target": "section_video",
+      "relation": "controls",
+      "confidence": "EXTRACTED",
+      "detail": "Controls walkthrough video fallback visibility"
+    },
+    {
+      "source": "fn_init_video_fallbacks",
+      "target": "section_projects",
+      "relation": "controls",
+      "confidence": "EXTRACTED",
+      "detail": "Controls dexterAI video fallback visibility"
+    },
+    {
+      "source": "fn_init_active_nav_tracking",
+      "target": "section_nav",
+      "relation": "updates",
+      "confidence": "EXTRACTED",
+      "detail": "Toggles .active class on nav links based on scroll position"
+    },
+    {
+      "source": "section_hero",
+      "target": "asset_profile_pic",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L56"
+    },
+    {
+      "source": "section_video",
+      "target": "asset_walkthrough_mp4",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L133"
+    },
+    {
+      "source": "section_projects",
+      "target": "asset_dexterai_mp4",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L269"
+    },
+    {
+      "source": "section_projects",
+      "target": "asset_platform_images",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_location": "index.html:L291,L306,L321"
+    },
+    {
+      "source": "section_projects",
+      "target": "project_dexterai",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "section_projects",
+      "target": "project_telegram_bid",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "section_projects",
+      "target": "project_whatsapp",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "section_projects",
+      "target": "project_pgc",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "section_projects",
+      "target": "project_pragmatix",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "design_tokens",
+      "target": "section_nav",
+      "relation": "styles",
+      "confidence": "EXTRACTED",
+      "detail": "Nav uses --bg-nav, --border-subtle, --gold-primary, --text-secondary, etc."
+    },
+    {
+      "source": "design_tokens",
+      "target": "section_hero",
+      "relation": "styles",
+      "confidence": "EXTRACTED",
+      "detail": "Hero uses gold palette for glows, gradients, buttons; spacing tokens for layout"
+    },
+    {
+      "source": "design_tokens",
+      "target": "section_video",
+      "relation": "styles",
+      "confidence": "EXTRACTED",
+      "detail": "Video card uses --bg-card, --border-gold, gold box-shadow"
+    },
+    {
+      "source": "design_tokens",
+      "target": "section_projects",
+      "relation": "styles",
+      "confidence": "EXTRACTED",
+      "detail": "Project cards use --bg-card, --bg-card-hover, --border-gold, spacing tokens"
+    },
+    {
+      "source": "design_tokens",
+      "target": "section_footer",
+      "relation": "styles",
+      "confidence": "EXTRACTED",
+      "detail": "Footer uses --bg-section, --gold-primary, --text-muted"
+    },
+    {
+      "source": "css_animations",
+      "target": "section_hero",
+      "relation": "animates",
+      "confidence": "EXTRACTED",
+      "detail": "glowPulse, ringPulse, heroFadeIn, bounce all apply to hero elements"
+    },
+    {
+      "source": "css_responsive",
+      "target": "section_nav",
+      "relation": "adapts",
+      "confidence": "EXTRACTED",
+      "detail": "At 768px: hides .nav-links, shows .nav-toggle"
+    },
+    {
+      "source": "css_responsive",
+      "target": "section_hero",
+      "relation": "adapts",
+      "confidence": "EXTRACTED",
+      "detail": "At 768px: reduces padding, btn size. At 480px: stacks buttons, shrinks profile pic"
+    },
+    {
+      "source": "css_responsive",
+      "target": "section_projects",
+      "relation": "adapts",
+      "confidence": "EXTRACTED",
+      "detail": "At 768px: projects-grid and platforms-grid collapse to single column"
+    },
+    {
+      "source": "file_index_html",
+      "target": "seo_meta",
+      "relation": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file_styles_css",
+      "target": "design_tokens",
+      "relation": "defines",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file_styles_css",
+      "target": "css_animations",
+      "relation": "defines",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "file_styles_css",
+      "target": "css_responsive",
+      "relation": "defines",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "source": "section_hero",
+      "target": "section_video",
+      "relation": "links_to",
+      "confidence": "EXTRACTED",
+      "detail": "Scroll indicator anchor href='#video'"
+    },
+    {
+      "source": "section_nav",
+      "target": "section_hero",
+      "relation": "links_to",
+      "confidence": "EXTRACTED",
+      "detail": "Nav link href='#home'"
+    },
+    {
+      "source": "section_nav",
+      "target": "section_video",
+      "relation": "links_to",
+      "confidence": "EXTRACTED",
+      "detail": "Nav link href='#video'"
+    },
+    {
+      "source": "section_nav",
+      "target": "section_projects",
+      "relation": "links_to",
+      "confidence": "EXTRACTED",
+      "detail": "Nav link href='#projects'"
+    }
+  ],
+  "communities": [
+    {
+      "id": "community_layout",
+      "label": "Page Structure & Navigation",
+      "nodes": ["file_index_html", "section_nav", "section_hero", "section_video", "section_projects", "section_footer", "seo_meta"],
+      "summary": "The HTML document structure. A single-page app with fixed nav, hero, video, projects, and footer sections. Navigation links provide smooth-scroll between sections."
+    },
+    {
+      "id": "community_design_system",
+      "label": "Visual Design System",
+      "nodes": ["file_styles_css", "design_tokens", "css_animations", "css_responsive", "external_google_fonts"],
+      "summary": "The complete visual layer. Design tokens define the gold-on-dark brand palette. Animations provide ambient effects and scroll reveals. Responsive breakpoints at 768px/480px handle mobile."
+    },
+    {
+      "id": "community_interactivity",
+      "label": "JavaScript Interactivity",
+      "nodes": ["file_script_js", "fn_init_navigation", "fn_init_scroll_animations", "fn_init_video_fallbacks", "fn_setup_video_fallback", "fn_init_active_nav_tracking"],
+      "summary": "Client-side behavior layer. Four init functions handle: nav scroll effects + mobile toggle, IntersectionObserver-based scroll animations, video error/fallback handling, and active nav link tracking."
+    },
+    {
+      "id": "community_content",
+      "label": "Project Content & Assets",
+      "nodes": ["project_dexterai", "project_telegram_bid", "project_whatsapp", "project_pgc", "project_pragmatix", "asset_profile_pic", "asset_walkthrough_mp4", "asset_dexterai_mp4", "asset_platform_images"],
+      "summary": "The content layer — 5 portfolio projects and media assets. 3 projects have public GitHub/deployed links, 2 are marked private. Platform images are placeholder (directory empty)."
+    }
+  ]
+}

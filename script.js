@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initVideoFallbacks();
     initActiveNavTracking();
+    initSlideDeck();
 });
 
 /* -------------------------------------------- */
@@ -199,3 +200,89 @@ function toggleProject(cardId) {
     }
 }
 
+/* -------------------------------------------- */
+/* PDF SLIDE DECK CAROUSEL  (pdf.js canvas)      */
+/* -------------------------------------------- */
+function initSlideDeck() {
+    const canvas    = document.getElementById('slide-deck-canvas');
+    const ctx       = canvas.getContext('2d');
+    const prevBtn   = document.getElementById('slide-prev');
+    const nextBtn   = document.getElementById('slide-next');
+    const currentEl = document.getElementById('slide-current');
+    const totalEl   = document.getElementById('slide-total');
+
+    if (!canvas || !prevBtn || !nextBtn) return;
+
+    const PDF_SRC = 'assets/The_Eshopbox_Revenue_Engine.pdf';
+    let pdfDoc      = null;
+    let currentPage = 1;
+    let totalPages  = 8;
+    let rendering   = false;
+
+    /* ---- render one page to canvas ---- */
+    function renderPage(pageNum) {
+        if (!pdfDoc || rendering) return;
+        rendering = true;
+
+        pdfDoc.getPage(pageNum).then(function (page) {
+            /* Scale so the rendered page matches container width at device DPR */
+            var containerWidth = canvas.parentElement.clientWidth;
+            var baseViewport   = page.getViewport({ scale: 1 });
+            var dpr            = window.devicePixelRatio || 1;
+            var scale          = (containerWidth / baseViewport.width) * dpr;
+            var viewport       = page.getViewport({ scale: scale });
+
+            canvas.width  = viewport.width;
+            canvas.height = viewport.height;
+
+            page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+                rendering = false;
+            });
+        });
+    }
+
+    /* ---- UI helpers ---- */
+    function updateUI() {
+        currentEl.textContent = currentPage;
+        totalEl.textContent   = totalPages;
+        prevBtn.disabled = currentPage <= 1;
+        nextBtn.disabled = currentPage >= totalPages;
+    }
+
+    function goToPage(page) {
+        currentPage = Math.max(1, Math.min(page, totalPages));
+        renderPage(currentPage);
+        updateUI();
+    }
+
+    prevBtn.addEventListener('click', function () { goToPage(currentPage - 1); });
+    nextBtn.addEventListener('click', function () { goToPage(currentPage + 1); });
+
+    /* ---- load pdf.js & initialise ---- */
+    function tryInit() {
+        if (typeof pdfjsLib === 'undefined') {
+            /* pdf.js loaded as ES-module; import it */
+            import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs').then(function (mod) {
+                window.pdfjsLib = mod;
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+                    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+                loadPdf();
+            });
+        } else {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+            loadPdf();
+        }
+    }
+
+    function loadPdf() {
+        pdfjsLib.getDocument(PDF_SRC).promise.then(function (pdf) {
+            pdfDoc     = pdf;
+            totalPages = pdf.numPages;
+            updateUI();
+            renderPage(1);
+        });
+    }
+
+    tryInit();
+}

@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
 </head>
 
 <body>
@@ -125,8 +126,8 @@
 
                 <!-- FULL-WIDTH FOOTER: Action Buttons -->
                 <div class="profile-card-footer">
-                    <a href="https://www.linkedin.com/in/shikhargupta090699/" target="_blank"
-                        rel="noopener noreferrer" class="btn btn-linkedin" title="LinkedIn">
+                    <a href="https://www.linkedin.com/in/shikhargupta090699/" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-linkedin" title="LinkedIn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                             fill="currentColor">
                             <path
@@ -145,9 +146,8 @@
                     </a>
                     <a href="https://nextleap.app/portfolio/shikhar-gupta-q9fl" target="_blank"
                         rel="noopener noreferrer" class="btn btn-outline" title="Portfolio">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                             <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                         </svg>
@@ -155,9 +155,8 @@
                     </a>
                     <a href="assets/Shikhar_Gupta_Resume.pdf" target="_blank" rel="noopener noreferrer"
                         class="btn btn-white" title="Resume">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -212,6 +211,66 @@
                 <p class="video-context">A 4-minute walkthrough of how a routine bug fix turned into a company-wide
                     systems redesign.</p>
             </div>
+
+            <!-- PDF Slide Deck Carousel -->
+            <div class="slide-deck-card fade-up">
+                <div class="slide-deck-header">
+                    <div class="slide-deck-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>Slide Deck</span>
+                    </div>
+                    <div class="slide-deck-meta">CRM Redesign — The Eshopbox Revenue Engine</div>
+                </div>
+
+                <div class="slide-deck-viewer">
+                    <canvas id="slide-deck-canvas"></canvas>
+                </div>
+
+                <div class="slide-deck-controls">
+                    <button class="slide-btn" id="slide-prev" aria-label="Previous slide" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        <span>Prev</span>
+                    </button>
+
+                    <div class="slide-counter">
+                        <span id="slide-current">1</span>
+                        <span class="slide-divider">/</span>
+                        <span id="slide-total">—</span>
+                    </div>
+
+                    <button class="slide-btn" id="slide-next" aria-label="Next slide">
+                        <span>Next</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="slide-deck-footer">
+                    <p class="video-context">Supporting slide deck accompanying the project walkthrough video.</p>
+                    <a class="slide-download-btn" href="assets/The_Eshopbox_Revenue_Engine.pdf" download
+                        aria-label="Download slide deck PDF">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -243,7 +302,8 @@
 
                 <!-- Project 1: dexterAI -->
                 <div class="project-card-v2 fade-up" id="proj-1">
-                    <button class="pc-header" aria-expanded="false" aria-controls="proj-1-body" onclick="toggleProject('proj-1')">
+                    <button class="pc-header" aria-expanded="false" aria-controls="proj-1-body"
+                        onclick="toggleProject('proj-1')">
                         <div class="pc-header-left">
                             <span class="pc-number">01</span>
                             <div>
@@ -251,19 +311,39 @@
                                 <span class="pc-tag">Desktop AI Workbench</span>
                             </div>
                         </div>
-                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg></span>
                     </button>
                     <div class="pc-body" id="proj-1-body">
-                        <p class="pc-overview">A desktop-native AI development workbench that allows developers to run, compare, and orchestrate multiple models locally without cloud data leakage.</p>
+                        <div class="pc-media-banner" data-accent="dexter">
+                            <img src="assets/dexterAI-1.png" alt="dexterAI app screenshot"
+                                class="pc-media-img pc-media-img--screenshot" />
+                        </div>
+                        <p class="pc-overview">A desktop-native AI development workbench that allows developers to run,
+                            compare, and orchestrate multiple models locally without cloud data leakage.</p>
                         <ul class="pc-bullets">
-                            <li><strong>Multi-Provider Integration:</strong> Integrated APIs for 6 major AI providers (OpenAI, Anthropic, Google Gemini, GitHub Models, NVIDIA NIM, Deepgram) covering a catalog of 195 models.</li>
-                            <li><strong>Autonomous Coding Agent:</strong> Built a system loop where the local agent reads workspace files, edits code, and executes terminal commands, structured around explicit user approval gates for security.</li>
-                            <li><strong>Local-First Architecture:</strong> Managed system storage using SQLite for local conversation logs, stored API keys in the OS Keychain, and implemented zero telemetry to guarantee privacy.</li>
+                            <li><strong>Multi-Provider Integration:</strong> Integrated APIs for 6 major AI providers
+                                (OpenAI, Anthropic, Google Gemini, GitHub Models, NVIDIA NIM, Deepgram) covering a
+                                catalog of 195 models.</li>
+                            <li><strong>Autonomous Coding Agent:</strong> Built a system loop where the local agent
+                                reads workspace files, edits code, and executes terminal commands, structured around
+                                explicit user approval gates for security.</li>
+                            <li><strong>Local-First Architecture:</strong> Managed system storage using SQLite for local
+                                conversation logs, stored API keys in the OS Keychain, and implemented zero telemetry to
+                                guarantee privacy.</li>
                             <li><strong>Tech Stack:</strong> TypeScript Monorepo, React, Electron, SQLite.</li>
                         </ul>
                         <div class="pc-footer">
-                            <a href="https://github.com/leetcoderman/dexterAI" target="_blank" rel="noopener noreferrer" class="pc-github-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <a href="https://github.com/leetcoderman/dexterAI" target="_blank" rel="noopener noreferrer"
+                                class="pc-github-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
                                 Open in GitHub
                             </a>
                         </div>
@@ -272,7 +352,8 @@
 
                 <!-- Project 2: Telegram Bid Marketplace -->
                 <div class="project-card-v2 fade-up" id="proj-2">
-                    <button class="pc-header" aria-expanded="false" aria-controls="proj-2-body" onclick="toggleProject('proj-2')">
+                    <button class="pc-header" aria-expanded="false" aria-controls="proj-2-body"
+                        onclick="toggleProject('proj-2')">
                         <div class="pc-header-left">
                             <span class="pc-number">02</span>
                             <div>
@@ -280,18 +361,48 @@
                                 <span class="pc-tag">Multimodal AI Auction Tool</span>
                             </div>
                         </div>
-                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg></span>
                     </button>
                     <div class="pc-body" id="proj-2-body">
-                        <p class="pc-overview">A mobile-first auction marketplace where field sales or users upload product images via Telegram, and an AI agent auto-generates optimized, context-aware product descriptions to start a bid.</p>
+                        <div class="pc-media-banner" data-accent="telegram">
+                            <svg class="pc-media-logo" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="tg-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+                                        <stop offset="0%" stop-color="#2AABEE" />
+                                        <stop offset="100%" stop-color="#229ED9" />
+                                    </linearGradient>
+                                </defs>
+                                <circle cx="120" cy="120" r="120" fill="url(#tg-grad)" />
+                                <path d="M98 175c-3.9 0-3.2-1.5-4.6-5.2L82 132.2 174.6 78" fill="#C8DAEA" />
+                                <path d="M98 175c3 0 4.3-1.4 6-3l16-15.6-20-12" fill="#A9C9DD" />
+                                <path
+                                    d="M100 144.4l48.4 35.7c5.5 3 9.5 1.5 10.9-5.1l19.7-92.8c2-8.1-3.1-11.7-8.4-9.3L60 117.5c-7.9 3.2-7.8 7.6-1.4 9.5l29.7 9.3L159 93c3.2-2 6.2-.9 3.8 1.3"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                        <p class="pc-overview">A mobile-first auction marketplace where field sales or users upload
+                            product images via Telegram, and an AI agent auto-generates optimized, context-aware product
+                            descriptions to start a bid.</p>
                         <ul class="pc-bullets">
-                            <li><strong>Multimodal AI Processing:</strong> Used vision LLM APIs to extract product attributes from images and generate marketing copy.</li>
-                            <li><strong>Mobile/Field Integration:</strong> Designed a conversational Telegram bot frontend, linking it to a centralized bidding web application.</li>
-                            <li><strong>Tech Stack:</strong> Node.js, Telegram Bot API, OpenAI GPT-4o-mini (Vision API), Express.js.</li>
+                            <li><strong>Multimodal AI Processing:</strong> Used vision LLM APIs to extract product
+                                attributes from images and generate marketing copy.</li>
+                            <li><strong>Mobile/Field Integration:</strong> Designed a conversational Telegram bot
+                                frontend, linking it to a centralized bidding web application.</li>
+                            <li><strong>Tech Stack:</strong> Node.js, Telegram Bot API, OpenAI GPT-4o-mini (Vision API),
+                                Express.js.</li>
                         </ul>
                         <div class="pc-footer">
-                            <a href="https://github.com/leetcoderman/Telegram-bid-marketplace" target="_blank" rel="noopener noreferrer" class="pc-github-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <a href="https://github.com/leetcoderman/Telegram-bid-marketplace" target="_blank"
+                                rel="noopener noreferrer" class="pc-github-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                </svg>
                                 Open in GitHub
                             </a>
                         </div>
@@ -300,7 +411,8 @@
 
                 <!-- Project 3: WhatsApp Group AI Agents -->
                 <div class="project-card-v2 fade-up" id="proj-3">
-                    <button class="pc-header" aria-expanded="false" aria-controls="proj-3-body" onclick="toggleProject('proj-3')">
+                    <button class="pc-header" aria-expanded="false" aria-controls="proj-3-body"
+                        onclick="toggleProject('proj-3')">
                         <div class="pc-header-left">
                             <span class="pc-number">03</span>
                             <div>
@@ -308,18 +420,48 @@
                                 <span class="pc-tag">Multi-Agent Orchestration</span>
                             </div>
                         </div>
-                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg></span>
                     </button>
                     <div class="pc-body" id="proj-3-body">
-                        <p class="pc-overview">A field-ready agentic system where non-technical stakeholders or agents text a WhatsApp group, tag specific specialized virtual numbers (&ldquo;Workers&rdquo;), and receive database queries and system lookups automatically.</p>
+                        <div class="pc-media-banner" data-accent="whatsapp">
+                            <svg class="pc-media-logo" viewBox="0 0 175.216 175.552" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="wa-grad" x1="50%" y1="100%" x2="50%" y2="0%">
+                                        <stop offset="0%" stop-color="#20B038" />
+                                        <stop offset="100%" stop-color="#60D66A" />
+                                    </linearGradient>
+                                </defs>
+                                <path
+                                    d="M87.184 14.2A73.68 73.68 0 0 0 14.9 88.84a73.15 73.15 0 0 0 10.09 37.2L14 162.4l37.5-10.7a73.81 73.81 0 0 0 35.4 9h.03a73.7 73.7 0 0 0 73.4-73.68c0-19.7-7.7-38.2-21.6-52.1A73.2 73.2 0 0 0 87.184 14.2"
+                                    fill="url(#wa-grad)" />
+                                <path
+                                    d="M63.1 53.07c-1.6-3.5-3.2-3.6-4.7-3.6h-4c-1.6 0-4.1.6-6.3 3-2.2 2.4-8.2 8-8.2 19.5s8.4 22.6 9.6 24.2c1.2 1.6 16.2 25.9 40 35.3 19.7 7.8 23.8 6.3 28 5.9 4.3-.4 13.8-5.6 15.7-11.1 1.9-5.5 1.9-10.2 1.4-11.1-.6-1-2.2-1.6-4.5-2.7-2.4-1.2-13.8-6.8-16-7.6-2.1-.8-3.7-.4-5.3 1.6-2.6 3.3-5.1 6.6-7 8.2-1.6 1.4-3.7 1-5.6.2-2.8-1.2-10.8-4-20.5-12.7-7.6-6.8-12.7-15.1-14.2-17.7-1.5-2.5-.2-4 1.1-5.2 1.1-1.1 2.4-2.8 3.6-4.2 1.2-1.4 1.6-2.4 2.4-4 .8-1.6.4-3-.2-4.2-.6-1.2-5.5-13.5-7.3-18.4"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                        <p class="pc-overview">A field-ready agentic system where non-technical stakeholders or agents
+                            text a WhatsApp group, tag specific specialized virtual numbers (&ldquo;Workers&rdquo;), and
+                            receive database queries and system lookups automatically.</p>
                         <ul class="pc-bullets">
-                            <li><strong>Multi-Agent Routing:</strong> Designed routing logic to direct incoming queries to specific agent workers based on instructions.</li>
-                            <li><strong>API Studio Integration:</strong> Integrated Google&rsquo;s LLM APIs via Google AI Studio to run light-latency classification and retrieval.</li>
-                            <li><strong>Field Applicability:</strong> Created an accessible, high-adoption interface (WhatsApp) tailored for teams operating in low-bandwidth environments.</li>
+                            <li><strong>Multi-Agent Routing:</strong> Designed routing logic to direct incoming queries
+                                to specific agent workers based on instructions.</li>
+                            <li><strong>API Studio Integration:</strong> Integrated Google&rsquo;s LLM APIs via Google
+                                AI Studio to run light-latency classification and retrieval.</li>
+                            <li><strong>Field Applicability:</strong> Created an accessible, high-adoption interface
+                                (WhatsApp) tailored for teams operating in low-bandwidth environments.</li>
                         </ul>
                         <div class="pc-footer">
                             <span class="pc-private-badge">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
                                 Private &mdash; Client Safety
                             </span>
                         </div>
@@ -328,7 +470,8 @@
 
                 <!-- Project 4: Client Websites — PGC -->
                 <div class="project-card-v2 fade-up" id="proj-4">
-                    <button class="pc-header" aria-expanded="false" aria-controls="proj-4-body" onclick="toggleProject('proj-4')">
+                    <button class="pc-header" aria-expanded="false" aria-controls="proj-4-body"
+                        onclick="toggleProject('proj-4')">
                         <div class="pc-header-left">
                             <span class="pc-number">04</span>
                             <div>
@@ -336,26 +479,61 @@
                                 <span class="pc-tag">Growth &amp; Marketing &mdash; Family Business</span>
                             </div>
                         </div>
-                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg></span>
                     </button>
                     <div class="pc-body" id="proj-4-body">
-                        <p class="pc-overview">A premium small-batch coaching institute in West Patel Nagar, New Delhi, serving Classes 6&ndash;12 across CBSE, ICSE, and IGCSE since 2009. I own growth and marketing strategy to drive leads and offline programme signups for this family business with 15+ years of continuous teaching.</p>
+                        <div class="pc-media-banner" data-accent="pgc">
+                            <img src="assets/pgc-logo.jpg" alt="Pratibha Gupta Classes logo"
+                                class="pc-media-img pc-media-img--logo" />
+                        </div>
+                        <p class="pc-overview">A premium small-batch coaching institute in West Patel Nagar, New Delhi,
+                            serving Classes 6&ndash;12 across CBSE, ICSE, and IGCSE since 2009. I own growth and
+                            marketing strategy to drive leads and offline programme signups for this family business
+                            with 15+ years of continuous teaching.</p>
                         <ul class="pc-bullets">
-                            <li><strong>Digital Presence:</strong> Designed and deployed two responsive web prototypes to establish online discoverability for local parents and students.</li>
-                            <li><strong>Lead Generation:</strong> Built marketing workflows and landing pages targeted at West Patel Nagar and Delhi NCR parent decision-makers seeking premium, small-batch coaching.</li>
-                            <li><strong>Positioning:</strong> Crafted brand positioning anchored on trust, permanence, and concept-first teaching &mdash; differentiating from mass-batch, discount-led competitors.</li>
+                            <li><strong>Digital Presence:</strong> Designed and deployed two responsive web prototypes
+                                to establish online discoverability for local parents and students.</li>
+                            <li><strong>Lead Generation:</strong> Built marketing workflows and landing pages targeted
+                                at West Patel Nagar and Delhi NCR parent decision-makers seeking premium, small-batch
+                                coaching.</li>
+                            <li><strong>Positioning:</strong> Crafted brand positioning anchored on trust, permanence,
+                                and concept-first teaching &mdash; differentiating from mass-batch, discount-led
+                                competitors.</li>
                         </ul>
                         <div class="pc-footer pc-footer--multi">
-                            <a href="https://pgc-com.vercel.app" target="_blank" rel="noopener noreferrer" class="pc-github-btn pc-github-btn--outline">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            <a href="https://pgc-com.vercel.app" target="_blank" rel="noopener noreferrer"
+                                class="pc-github-btn pc-github-btn--outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
                                 Prototype 1
                             </a>
-                            <a href="https://primary-website-one.vercel.app" target="_blank" rel="noopener noreferrer" class="pc-github-btn pc-github-btn--outline">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            <a href="https://primary-website-one.vercel.app" target="_blank" rel="noopener noreferrer"
+                                class="pc-github-btn pc-github-btn--outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
                                 Prototype 2
                             </a>
                             <span class="pc-private-badge">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
                                 Private &mdash; Client Safety
                             </span>
                         </div>
@@ -364,7 +542,8 @@
 
                 <!-- Project 5: Pragmatix Internship -->
                 <div class="project-card-v2 fade-up" id="proj-5">
-                    <button class="pc-header" aria-expanded="false" aria-controls="proj-5-body" onclick="toggleProject('proj-5')">
+                    <button class="pc-header" aria-expanded="false" aria-controls="proj-5-body"
+                        onclick="toggleProject('proj-5')">
                         <div class="pc-header-left">
                             <span class="pc-number">05</span>
                             <div>
@@ -372,17 +551,36 @@
                                 <span class="pc-tag">Product Management Intern</span>
                             </div>
                         </div>
-                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg></span>
                     </button>
                     <div class="pc-body" id="proj-5-body">
-                        <p class="pc-overview">Product management internship focused on validating a new B2C coaching vertical using AI-native tools &mdash; from market research to rapid UI prototyping, bypassing traditional engineering queues.</p>
+                        <div class="pc-media-banner" data-accent="pragmatix">
+                            <img src="assets/pragmatix-logo.png" alt="Pragmatix Learning logo"
+                                class="pc-media-img pc-media-img--logo" />
+                        </div>
+                        <p class="pc-overview">Product management internship focused on validating a new B2C coaching
+                            vertical using AI-native tools &mdash; from market research to rapid UI prototyping,
+                            bypassing traditional engineering queues.</p>
                         <ul class="pc-bullets">
-                            <li><strong>Rapid Market Validation:</strong> Leveraged LLM tools (OpenAI/ChatGPT, Claude, Perplexity) to conduct deep competitor research and validate market demand for the new vertical.</li>
-                            <li><strong>UI/UX Prototyping:</strong> Used v0.dev and front-end generation models to instantly build, test, and present responsive web layouts &mdash; validating user onboarding flows in real-time without engineering dependencies.</li>
+                            <li><strong>Rapid Market Validation:</strong> Leveraged LLM tools (OpenAI/ChatGPT, Claude,
+                                Perplexity) to conduct deep competitor research and validate market demand for the new
+                                vertical.</li>
+                            <li><strong>UI/UX Prototyping:</strong> Used v0.dev and front-end generation models to
+                                instantly build, test, and present responsive web layouts &mdash; validating user
+                                onboarding flows in real-time without engineering dependencies.</li>
                         </ul>
                         <div class="pc-footer">
                             <span class="pc-private-badge">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
                                 Private &mdash; Client Safety
                             </span>
                         </div>
@@ -391,7 +589,8 @@
 
                 <!-- Project 6: Graphify -->
                 <div class="project-card-v2 fade-up" id="proj-6">
-                    <button class="pc-header" aria-expanded="false" aria-controls="proj-6-body" onclick="toggleProject('proj-6')">
+                    <button class="pc-header" aria-expanded="false" aria-controls="proj-6-body"
+                        onclick="toggleProject('proj-6')">
                         <div class="pc-header-left">
                             <span class="pc-number">06</span>
                             <div>
@@ -399,17 +598,29 @@
                                 <span class="pc-tag">Codebase Intelligence Tool</span>
                             </div>
                         </div>
-                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+                        <span class="pc-chevron" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg></span>
                     </button>
                     <div class="pc-body" id="proj-6-body">
-                        <p class="pc-overview">Saves compute &amp; token costs by scanning any folder or repository and generating an interactive force-directed dependency graph. Maps files, components, functions, design tokens, and assets into a visual network &mdash; enabling AI agents to navigate codebases semantically without brute-force scanning.</p>
+                        <p class="pc-overview">Saves compute &amp; token costs by scanning any folder or repository and
+                            generating an interactive force-directed dependency graph. Maps files, components,
+                            functions, design tokens, and assets into a visual network &mdash; enabling AI agents to
+                            navigate codebases semantically without brute-force scanning.</p>
                         <ul class="pc-bullets">
-                            <li><strong>Graph-Based Navigation:</strong> Outputs a JSON knowledge graph + interactive HTML visualisation (29 nodes, 38 edges, 4 communities for this very website).</li>
-                            <li><strong>Token Efficiency:</strong> Achieves ~40&times; fewer tokens per targeted query compared to full codebase reads &mdash; enabling faster, cheaper agentic coding sessions.</li>
-                            <li><strong>Self-Demonstrating:</strong> The <code>graphify-out/</code> folder in this website&rsquo;s own repository was generated using this tool.</li>
+                            <li><strong>Graph-Based Navigation:</strong> Outputs a JSON knowledge graph + interactive
+                                HTML visualisation (29 nodes, 38 edges, 4 communities for this very website).</li>
+                            <li><strong>Token Efficiency:</strong> Achieves ~40&times; fewer tokens per targeted query
+                                compared to full codebase reads &mdash; enabling faster, cheaper agentic coding
+                                sessions.</li>
+                            <li><strong>Self-Demonstrating:</strong> The <code>graphify-out/</code> folder in this
+                                website&rsquo;s own repository was generated using this tool.</li>
                         </ul>
-                        <div class="pc-graphify-preview">
-                            <img src="assets/images/graphify-screenshot.png" alt="Graphify dependency graph of this website" class="graphify-screenshot" />
+                        <div class="pc-graphify-preview pc-media-banner" data-accent="graphify">
+                            <img src="assets/images/graphify-screenshot.png"
+                                alt="Graphify dependency graph of this website" class="graphify-screenshot" />
                             <div class="graphify-stats">
                                 <span class="graphify-stat"><strong>29</strong> nodes</span>
                                 <span class="graphify-stat"><strong>38</strong> edges</span>
@@ -418,9 +629,23 @@
                         </div>
                         <div class="pc-footer">
                             <span class="pc-private-badge">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
                                 Internal Tool
                             </span>
+                            <a href="https://github.com/leetcoderman/sun-king-apm" target="_blank"
+                                rel="noopener noreferrer" class="pc-github-btn" id="graphify-github-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path
+                                        d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+                                </svg>
+                                Open in GitHub
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphify — Sun King Website Knowledge Graph</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .header h1 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #cc9900;
+            letter-spacing: -0.01em;
+        }
+        .header .stats {
+            font-size: 12px;
+            color: #666;
+        }
+        .header .stats span {
+            color: #999;
+            margin: 0 4px;
+        }
+
+        /* Search */
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 6px 12px;
+            flex: 0 1 300px;
+        }
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #e0e0e0;
+            font-size: 13px;
+            width: 100%;
+            font-family: inherit;
+        }
+        .search-box input::placeholder { color: #444; }
+
+        /* Filter Buttons */
+        .filters {
+            display: flex;
+            gap: 6px;
+        }
+        .filter-btn {
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 100px;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .filter-btn:hover { border-color: rgba(255,255,255,0.2); color: #bbb; }
+        .filter-btn.active { border-color: #cc9900; color: #cc9900; background: rgba(204,153,0,0.08); }
+
+        /* Canvas */
+        #graph-canvas {
+            position: fixed;
+            top: 52px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        /* Node Detail Panel */
+        .panel {
+            position: fixed;
+            top: 52px;
+            right: -420px;
+            width: 400px;
+            bottom: 0;
+            background: rgba(14, 14, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255,255,255,0.06);
+            z-index: 50;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .panel.open { right: 0; }
+
+        .panel-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px;
+        }
+        .panel-close:hover { color: #fff; }
+
+        .panel-type {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #cc9900;
+            margin-bottom: 8px;
+        }
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        .panel-file {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 16px;
+            font-family: 'SF Mono', Consolas, monospace;
+        }
+        .panel-summary {
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .panel-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+        .panel-edge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 4px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .panel-edge:hover { background: rgba(204,153,0,0.06); border-color: rgba(204,153,0,0.2); }
+        .panel-edge-relation {
+            color: #cc9900;
+            font-weight: 600;
+            font-size: 10px;
+            text-transform: uppercase;
+            min-width: 70px;
+        }
+        .panel-edge-target { color: #ccc; }
+        .panel-edge-arrow { color: #444; }
+
+        .panel-meta {
+            font-size: 11px;
+            color: #555;
+            margin-top: 4px;
+        }
+        .panel-meta code {
+            background: rgba(255,255,255,0.04);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Community Legend */
+        .legend {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            z-index: 50;
+            display: flex;
+            gap: 12px;
+            background: rgba(14,14,20,0.85);
+            backdrop-filter: blur(12px);
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: #888;
+        }
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            padding: 6px 12px;
+            background: rgba(20,20,30,0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            font-size: 12px;
+            color: #ddd;
+            pointer-events: none;
+            z-index: 200;
+            display: none;
+            max-width: 280px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⬡ graphify — sun-king/website</h1>
+        <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="search" placeholder="Search nodes…" />
+        </div>
+        <div class="filters">
+            <button class="filter-btn active" data-type="all">All</button>
+            <button class="filter-btn" data-type="file">Files</button>
+            <button class="filter-btn" data-type="component">Components</button>
+            <button class="filter-btn" data-type="function">Functions</button>
+            <button class="filter-btn" data-type="design_system">Design</button>
+            <button class="filter-btn" data-type="content_entity">Content</button>
+            <button class="filter-btn" data-type="asset">Assets</button>
+        </div>
+        <div class="stats">
+            <span>29</span> nodes · <span>38</span> edges · <span>4</span> communities
+        </div>
+    </div>
+
+    <canvas id="graph-canvas"></canvas>
+
+    <div class="panel" id="panel">
+        <button class="panel-close" id="panel-close">✕</button>
+        <div id="panel-content"></div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#cc9900"></div>Files</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4fc3f7"></div>Components</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#81c784"></div>Functions</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ba68c8"></div>Design System</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ff8a65"></div>Content</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#90a4ae"></div>Assets</div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+    // =============================================
+    // GRAPH DATA (from graph.json)
+    // =============================================
+    const graphData = {
+        nodes: [
+            { id: "file_index_html", label: "index.html", type: "file", community: 0 },
+            { id: "file_styles_css", label: "styles.css", type: "file", community: 1 },
+            { id: "file_script_js", label: "script.js", type: "file", community: 2 },
+            { id: "section_nav", label: "Navigation", type: "component", community: 0 },
+            { id: "section_hero", label: "Hero Section", type: "component", community: 0 },
+            { id: "section_video", label: "Video Section", type: "component", community: 0 },
+            { id: "section_projects", label: "Projects Section", type: "component", community: 0 },
+            { id: "section_footer", label: "Footer", type: "component", community: 0 },
+            { id: "design_tokens", label: "Design Tokens", type: "design_system", community: 1 },
+            { id: "css_animations", label: "Animations", type: "design_system", community: 1 },
+            { id: "css_responsive", label: "Responsive", type: "design_system", community: 1 },
+            { id: "fn_init_navigation", label: "initNavigation()", type: "function", community: 2 },
+            { id: "fn_init_scroll_animations", label: "initScrollAnimations()", type: "function", community: 2 },
+            { id: "fn_init_video_fallbacks", label: "initVideoFallbacks()", type: "function", community: 2 },
+            { id: "fn_setup_video_fallback", label: "setupVideoFallback()", type: "function", community: 2 },
+            { id: "fn_init_active_nav_tracking", label: "initActiveNavTracking()", type: "function", community: 2 },
+            { id: "asset_profile_pic", label: "profile-pic.jpg", type: "asset", community: 3 },
+            { id: "asset_walkthrough_mp4", label: "walkthrough.mp4", type: "asset", community: 3 },
+            { id: "asset_dexterai_mp4", label: "dexterai.mp4", type: "asset", community: 3 },
+            { id: "asset_platform_images", label: "platform-{1,2,3}.png", type: "asset", community: 3 },
+            { id: "project_dexterai", label: "dexterAI", type: "content_entity", community: 3 },
+            { id: "project_telegram_bid", label: "Telegram Bid", type: "content_entity", community: 3 },
+            { id: "project_whatsapp", label: "WhatsApp Agent", type: "content_entity", community: 3 },
+            { id: "project_pgc", label: "PGC Websites", type: "content_entity", community: 3 },
+            { id: "project_pragmatix", label: "Pragmatix", type: "content_entity", community: 3 },
+            { id: "external_google_fonts", label: "Google Fonts", type: "dependency", community: 1 },
+            { id: "seo_meta", label: "SEO Meta", type: "metadata", community: 0 },
+        ],
+        edges: [
+            { source: "file_index_html", target: "file_styles_css", relation: "imports" },
+            { source: "file_index_html", target: "file_script_js", relation: "imports" },
+            { source: "file_index_html", target: "external_google_fonts", relation: "imports" },
+            { source: "file_script_js", target: "section_nav", relation: "manipulates" },
+            { source: "fn_init_navigation", target: "section_nav", relation: "controls" },
+            { source: "fn_init_scroll_animations", target: "css_animations", relation: "triggers" },
+            { source: "fn_init_video_fallbacks", target: "fn_setup_video_fallback", relation: "calls" },
+            { source: "fn_init_video_fallbacks", target: "section_video", relation: "controls" },
+            { source: "fn_init_video_fallbacks", target: "section_projects", relation: "controls" },
+            { source: "fn_init_active_nav_tracking", target: "section_nav", relation: "updates" },
+            { source: "section_hero", target: "asset_profile_pic", relation: "references" },
+            { source: "section_video", target: "asset_walkthrough_mp4", relation: "references" },
+            { source: "section_projects", target: "asset_dexterai_mp4", relation: "references" },
+            { source: "section_projects", target: "asset_platform_images", relation: "references" },
+            { source: "section_projects", target: "project_dexterai", relation: "contains" },
+            { source: "section_projects", target: "project_telegram_bid", relation: "contains" },
+            { source: "section_projects", target: "project_whatsapp", relation: "contains" },
+            { source: "section_projects", target: "project_pgc", relation: "contains" },
+            { source: "section_projects", target: "project_pragmatix", relation: "contains" },
+            { source: "design_tokens", target: "section_nav", relation: "styles" },
+            { source: "design_tokens", target: "section_hero", relation: "styles" },
+            { source: "design_tokens", target: "section_video", relation: "styles" },
+            { source: "design_tokens", target: "section_projects", relation: "styles" },
+            { source: "design_tokens", target: "section_footer", relation: "styles" },
+            { source: "css_animations", target: "section_hero", relation: "animates" },
+            { source: "css_responsive", target: "section_nav", relation: "adapts" },
+            { source: "css_responsive", target: "section_hero", relation: "adapts" },
+            { source: "css_responsive", target: "section_projects", relation: "adapts" },
+            { source: "file_index_html", target: "seo_meta", relation: "contains" },
+            { source: "file_styles_css", target: "design_tokens", relation: "defines" },
+            { source: "file_styles_css", target: "css_animations", relation: "defines" },
+            { source: "file_styles_css", target: "css_responsive", relation: "defines" },
+            { source: "section_hero", target: "section_video", relation: "links_to" },
+            { source: "section_nav", target: "section_hero", relation: "links_to" },
+            { source: "section_nav", target: "section_video", relation: "links_to" },
+            { source: "section_nav", target: "section_projects", relation: "links_to" },
+        ]
+    };
+
+    // =============================================
+    // COLOR MAP
+    // =============================================
+    const typeColors = {
+        file: '#cc9900',
+        component: '#4fc3f7',
+        function: '#81c784',
+        design_system: '#ba68c8',
+        content_entity: '#ff8a65',
+        asset: '#90a4ae',
+        dependency: '#78909c',
+        metadata: '#78909c',
+    };
+
+    const typeSizes = {
+        file: 18,
+        component: 15,
+        design_system: 14,
+        function: 12,
+        content_entity: 10,
+        asset: 9,
+        dependency: 9,
+        metadata: 9,
+    };
+
+    // =============================================
+    // FORCE-DIRECTED LAYOUT
+    // =============================================
+    const canvas = document.getElementById('graph-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, dpr;
+
+    function resize() {
+        dpr = window.devicePixelRatio || 1;
+        W = window.innerWidth;
+        H = window.innerHeight - 52;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Initialize positions
+    const positions = {};
+    const velocities = {};
+    const cx = W / 2, cy = H / 2;
+
+    graphData.nodes.forEach((n, i) => {
+        const angle = (i / graphData.nodes.length) * Math.PI * 2;
+        const r = 150 + Math.random() * 100;
+        positions[n.id] = { x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r };
+        velocities[n.id] = { x: 0, y: 0 };
+    });
+
+    // Build adjacency
+    const adjacency = {};
+    graphData.nodes.forEach(n => { adjacency[n.id] = []; });
+    graphData.edges.forEach(e => {
+        if (adjacency[e.source]) adjacency[e.source].push(e);
+        if (adjacency[e.target]) adjacency[e.target].push({ ...e, source: e.target, target: e.source, relation: '← ' + e.relation });
+    });
+
+    // Node map
+    const nodeMap = {};
+    graphData.nodes.forEach(n => { nodeMap[n.id] = n; });
+
+    // State
+    let hoveredNode = null;
+    let selectedNode = null;
+    let draggingNode = null;
+    let activeFilter = 'all';
+    let searchQuery = '';
+    let panX = 0, panY = 0;
+    let zoom = 1;
+
+    function isNodeVisible(n) {
+        if (activeFilter !== 'all' && n.type !== activeFilter) return false;
+        if (searchQuery && !n.label.toLowerCase().includes(searchQuery)) return false;
+        return true;
+    }
+
+    // Simulation
+    function simulate() {
+        const nodes = graphData.nodes.filter(isNodeVisible);
+        const nodeIds = new Set(nodes.map(n => n.id));
+
+        // Repulsion
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const a = positions[nodes[i].id];
+                const b = positions[nodes[j].id];
+                let dx = b.x - a.x;
+                let dy = b.y - a.y;
+                let d = Math.sqrt(dx * dx + dy * dy) || 1;
+                let force = 8000 / (d * d);
+                let fx = (dx / d) * force;
+                let fy = (dy / d) * force;
+                velocities[nodes[i].id].x -= fx;
+                velocities[nodes[i].id].y -= fy;
+                velocities[nodes[j].id].x += fx;
+                velocities[nodes[j].id].y += fy;
+            }
+        }
+
+        // Attraction (edges)
+        graphData.edges.forEach(e => {
+            if (!nodeIds.has(e.source) || !nodeIds.has(e.target)) return;
+            const a = positions[e.source];
+            const b = positions[e.target];
+            let dx = b.x - a.x;
+            let dy = b.y - a.y;
+            let d = Math.sqrt(dx * dx + dy * dy) || 1;
+            let force = (d - 120) * 0.01;
+            let fx = (dx / d) * force;
+            let fy = (dy / d) * force;
+            velocities[e.source].x += fx;
+            velocities[e.source].y += fy;
+            velocities[e.target].x -= fx;
+            velocities[e.target].y -= fy;
+        });
+
+        // Center gravity
+        nodes.forEach(n => {
+            const p = positions[n.id];
+            velocities[n.id].x += (cx - p.x) * 0.001;
+            velocities[n.id].y += (cy - p.y) * 0.001;
+        });
+
+        // Apply + damping
+        nodes.forEach(n => {
+            if (draggingNode === n.id) return;
+            const v = velocities[n.id];
+            v.x *= 0.85;
+            v.y *= 0.85;
+            positions[n.id].x += v.x;
+            positions[n.id].y += v.y;
+        });
+    }
+
+    // Render
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.save();
+        ctx.translate(panX, panY);
+        ctx.scale(zoom, zoom);
+
+        const nodes = graphData.nodes.filter(isNodeVisible);
+        const nodeIds = new Set(nodes.map(n => n.id));
+
+        // Edges
+        graphData.edges.forEach(e => {
+            if (!nodeIds.has(e.source) || !nodeIds.has(e.target)) return;
+            const a = positions[e.source];
+            const b = positions[e.target];
+
+            const isHighlighted = hoveredNode && (e.source === hoveredNode || e.target === hoveredNode);
+            const isSelected = selectedNode && (e.source === selectedNode || e.target === selectedNode);
+
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+
+            if (isHighlighted || isSelected) {
+                ctx.strokeStyle = 'rgba(204, 153, 0, 0.6)';
+                ctx.lineWidth = 2;
+            } else {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+                ctx.lineWidth = 0.5;
+            }
+            ctx.stroke();
+
+            // Arrow
+            if (isHighlighted || isSelected) {
+                const angle = Math.atan2(b.y - a.y, b.x - a.x);
+                const targetSize = typeSizes[nodeMap[e.target]?.type] || 10;
+                const arrowX = b.x - Math.cos(angle) * (targetSize + 4);
+                const arrowY = b.y - Math.sin(angle) * (targetSize + 4);
+                ctx.beginPath();
+                ctx.moveTo(arrowX, arrowY);
+                ctx.lineTo(arrowX - 8 * Math.cos(angle - 0.3), arrowY - 8 * Math.sin(angle - 0.3));
+                ctx.lineTo(arrowX - 8 * Math.cos(angle + 0.3), arrowY - 8 * Math.sin(angle + 0.3));
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(204, 153, 0, 0.6)';
+                ctx.fill();
+            }
+        });
+
+        // Nodes
+        nodes.forEach(n => {
+            const p = positions[n.id];
+            const color = typeColors[n.type] || '#666';
+            const size = typeSizes[n.type] || 10;
+            const isHovered = hoveredNode === n.id;
+            const isSelected = selectedNode === n.id;
+            const isConnected = hoveredNode && adjacency[hoveredNode]?.some(e => e.target === n.id || e.source === n.id);
+            const dimmed = hoveredNode && !isHovered && !isConnected && hoveredNode !== n.id;
+
+            // Glow
+            if (isHovered || isSelected) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, size + 12, 0, Math.PI * 2);
+                const gradient = ctx.createRadialGradient(p.x, p.y, size, p.x, p.y, size + 12);
+                gradient.addColorStop(0, color + '40');
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+
+            // Circle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+            ctx.fillStyle = dimmed ? color + '20' : color + (isHovered ? 'ff' : 'cc');
+            ctx.fill();
+
+            if (isSelected) {
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // Label
+            if (!dimmed || isHovered || isSelected) {
+                ctx.font = `${isHovered || isSelected ? '600' : '400'} 11px Inter, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.fillStyle = dimmed ? '#333' : (isHovered || isSelected ? '#fff' : '#aaa');
+                ctx.fillText(n.label, p.x, p.y + size + 16);
+            }
+        });
+
+        ctx.restore();
+    }
+
+    function loop() {
+        simulate();
+        draw();
+        requestAnimationFrame(loop);
+    }
+    loop();
+
+    // =============================================
+    // INTERACTION
+    // =============================================
+    function getMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (e.clientX - rect.left - panX) / zoom,
+            y: (e.clientY - rect.top - panY) / zoom
+        };
+    }
+
+    function findNode(mx, my) {
+        const nodes = graphData.nodes.filter(isNodeVisible);
+        for (let i = nodes.length - 1; i >= 0; i--) {
+            const n = nodes[i];
+            const p = positions[n.id];
+            const size = typeSizes[n.type] || 10;
+            const dx = mx - p.x;
+            const dy = my - p.y;
+            if (dx * dx + dy * dy < (size + 6) * (size + 6)) return n;
+        }
+        return null;
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+        const { x, y } = getMousePos(e);
+
+        if (draggingNode) {
+            positions[draggingNode].x = x;
+            positions[draggingNode].y = y;
+            velocities[draggingNode].x = 0;
+            velocities[draggingNode].y = 0;
+            return;
+        }
+
+        const node = findNode(x, y);
+        hoveredNode = node ? node.id : null;
+        canvas.style.cursor = node ? 'pointer' : 'default';
+
+        // Tooltip
+        const tooltip = document.getElementById('tooltip');
+        if (node) {
+            tooltip.style.display = 'block';
+            tooltip.style.left = (e.clientX + 16) + 'px';
+            tooltip.style.top = (e.clientY - 10) + 'px';
+            tooltip.textContent = node.label + ' (' + node.type.replace('_', ' ') + ')';
+        } else {
+            tooltip.style.display = 'none';
+        }
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+        const { x, y } = getMousePos(e);
+        const node = findNode(x, y);
+        if (node) {
+            draggingNode = node.id;
+            e.preventDefault();
+        }
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+        if (draggingNode) {
+            const { x, y } = getMousePos(e);
+            const node = findNode(x, y);
+            if (node && node.id === draggingNode) {
+                openPanel(node);
+            }
+            draggingNode = null;
+        }
+    });
+
+    canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY > 0 ? 0.95 : 1.05;
+        zoom = Math.min(3, Math.max(0.3, zoom * factor));
+    }, { passive: false });
+
+    // Pan
+    let isPanning = false, lastPan = { x: 0, y: 0 };
+    canvas.addEventListener('mousedown', (e) => {
+        if (!findNode(...Object.values(getMousePos(e)))) {
+            isPanning = true;
+            lastPan = { x: e.clientX, y: e.clientY };
+        }
+    });
+    canvas.addEventListener('mousemove', (e) => {
+        if (isPanning) {
+            panX += e.clientX - lastPan.x;
+            panY += e.clientY - lastPan.y;
+            lastPan = { x: e.clientX, y: e.clientY };
+        }
+    });
+    window.addEventListener('mouseup', () => { isPanning = false; });
+
+    // =============================================
+    // PANEL
+    // =============================================
+    function openPanel(node) {
+        selectedNode = node.id;
+        const panel = document.getElementById('panel');
+        const content = document.getElementById('panel-content');
+
+        const edges = adjacency[node.id] || [];
+        const outgoing = graphData.edges.filter(e => e.source === node.id);
+        const incoming = graphData.edges.filter(e => e.target === node.id);
+
+        let html = `
+            <div class="panel-type">${node.type.replace('_', ' ')}</div>
+            <div class="panel-title">${node.label}</div>
+            <div class="panel-file">${node.id}</div>
+        `;
+
+        if (outgoing.length) {
+            html += `<div class="panel-section-title">Outgoing (${outgoing.length})</div>`;
+            outgoing.forEach(e => {
+                const t = nodeMap[e.target];
+                html += `<div class="panel-edge" data-id="${e.target}">
+                    <span class="panel-edge-relation">${e.relation}</span>
+                    <span class="panel-edge-arrow">→</span>
+                    <span class="panel-edge-target">${t?.label || e.target}</span>
+                </div>`;
+            });
+        }
+
+        if (incoming.length) {
+            html += `<div class="panel-section-title">Incoming (${incoming.length})</div>`;
+            incoming.forEach(e => {
+                const s = nodeMap[e.source];
+                html += `<div class="panel-edge" data-id="${e.source}">
+                    <span class="panel-edge-relation">${e.relation}</span>
+                    <span class="panel-edge-arrow">←</span>
+                    <span class="panel-edge-target">${s?.label || e.source}</span>
+                </div>`;
+            });
+        }
+
+        content.innerHTML = html;
+        panel.classList.add('open');
+
+        // Click on edge targets to navigate
+        content.querySelectorAll('.panel-edge').forEach(el => {
+            el.addEventListener('click', () => {
+                const id = el.dataset.id;
+                if (nodeMap[id]) openPanel(nodeMap[id]);
+            });
+        });
+    }
+
+    document.getElementById('panel-close').addEventListener('click', () => {
+        document.getElementById('panel').classList.remove('open');
+        selectedNode = null;
+    });
+
+    // =============================================
+    // FILTERS & SEARCH
+    // =============================================
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeFilter = btn.dataset.type;
+        });
+    });
+
+    document.getElementById('search').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase();
+    });
+    </script>
+</body>
+</html>
