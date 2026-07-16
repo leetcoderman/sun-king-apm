@@ -613,6 +613,7 @@ img {
     width: 100%;
     aspect-ratio: 16 / 9;
     background: var(--bg-card);
+    cursor: pointer;
 }
 
 .video-wrapper video {
@@ -668,6 +669,276 @@ img {
     text-align: center;
     font-style: italic;
     padding: 0 var(--space-sm);
+}
+
+/* -------------------------------------------- */
+/* CUSTOM VIDEO PLAYER CONTROLS                  */
+/* -------------------------------------------- */
+
+
+.custom-video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+    padding: 32px 16px 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-wrapper:hover .custom-video-controls,
+.video-wrapper.cv-show-controls .custom-video-controls {
+    opacity: 1;
+}
+
+/* Progress Bar */
+.cv-progress-bar {
+    position: relative;
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: height 0.15s ease;
+}
+
+.cv-progress-bar:hover {
+    height: 7px;
+}
+
+.cv-progress-buffered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    pointer-events: none;
+    transition: width 0.1s linear;
+}
+
+.cv-progress-filled {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--gold-primary);
+    border-radius: 3px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    transition: width 0.05s linear;
+}
+
+.cv-progress-handle {
+    position: absolute;
+    right: -6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold-primary);
+    box-shadow: 0 0 6px rgba(204, 153, 0, 0.6);
+    transform: scale(0);
+    transition: transform 0.15s ease;
+}
+
+.cv-progress-bar:hover .cv-progress-handle,
+.cv-progress-bar.cv-dragging .cv-progress-handle {
+    transform: scale(1);
+}
+
+/* Controls Row */
+.cv-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.cv-controls-left,
+.cv-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Buttons */
+.cv-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+    width: 32px;
+    height: 32px;
+}
+
+.cv-btn:hover {
+    color: var(--gold-primary);
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.1);
+}
+
+.cv-btn:active {
+    transform: scale(0.95);
+}
+
+.cv-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.cv-play-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Time Display */
+.cv-time {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-variant-numeric: tabular-nums;
+    font-family: 'Inter', monospace;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    margin-left: 4px;
+}
+
+.cv-time-current {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Volume Slider */
+.cv-volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 70px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.cv-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold-primary);
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(204, 153, 0, 0.5);
+}
+
+.cv-volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold-primary);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 4px rgba(204, 153, 0, 0.5);
+}
+
+/* Big Center Play Button Overlay */
+.cv-big-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.cv-big-play-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cv-big-play-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    border: 2px solid var(--gold-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-primary);
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.cv-big-play-btn svg {
+    width: 28px;
+    height: 28px;
+    margin-left: 3px;
+}
+
+.cv-big-play-overlay:hover .cv-big-play-btn {
+    transform: scale(1.12);
+    background: rgba(204, 153, 0, 0.2);
+    box-shadow: 0 0 30px rgba(204, 153, 0, 0.3);
+}
+
+/* Fullscreen adaptations */
+.video-wrapper:fullscreen .custom-video-controls,
+.video-wrapper:-webkit-full-screen .custom-video-controls {
+    padding-bottom: 20px;
+}
+
+.video-wrapper:fullscreen video,
+.video-wrapper:-webkit-full-screen video {
+    width: 100%;
+    height: 100%;
+}
+
+/* Mobile responsive for controls */
+@media (max-width: 480px) {
+    .cv-volume-slider {
+        display: none;
+    }
+
+    .cv-btn {
+        width: 28px;
+        height: 28px;
+    }
+
+    .cv-btn svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .cv-time {
+        font-size: 11px;
+    }
+
+    .cv-big-play-btn {
+        width: 56px;
+        height: 56px;
+    }
+
+    .cv-big-play-btn svg {
+        width: 22px;
+        height: 22px;
+    }
 }
 
 /* -------------------------------------------- */

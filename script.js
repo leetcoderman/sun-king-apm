@@ -90,51 +90,293 @@ function initScrollAnimations() {
 }
 
 /* -------------------------------------------- */
-/* VIDEO FALLBACKS                               */
+/* CUSTOM VIDEO PLAYER                           */
 /* -------------------------------------------- */
 function initVideoFallbacks() {
-    setupVideoFallback('walkthrough-video', 'walkthrough-fallback');
-    setupVideoFallback('dexter-video', 'dexter-fallback');
+    initCustomVideoPlayer({
+        videoId: 'walkthrough-video',
+        fallbackId: 'walkthrough-fallback',
+        controlsId: 'walkthrough-controls',
+        progressBarId: 'walkthrough-progress-bar',
+        progressFilledId: 'walkthrough-progress-filled',
+        bufferedId: 'walkthrough-buffered',
+        playBtnId: 'walkthrough-play-btn',
+        bigPlayId: 'walkthrough-big-play',
+    });
+    initCustomVideoPlayer({
+        videoId: 'dexter-video',
+        fallbackId: 'dexter-fallback',
+        controlsId: 'dexter-controls',
+        progressBarId: 'dexter-progress-bar',
+        progressFilledId: 'dexter-progress-filled',
+        bufferedId: 'dexter-buffered',
+        playBtnId: 'dexter-play-btn',
+        bigPlayId: 'dexter-big-play',
+    });
 }
 
-function setupVideoFallback(videoId, fallbackId) {
-    const video = document.getElementById(videoId);
-    const fallback = document.getElementById(fallbackId);
+function initCustomVideoPlayer(ids) {
+    const video = document.getElementById(ids.videoId);
+    const fallback = document.getElementById(ids.fallbackId);
+    const controls = document.getElementById(ids.controlsId);
+    const progressBar = document.getElementById(ids.progressBarId);
+    const progressFilled = document.getElementById(ids.progressFilledId);
+    const bufferedBar = document.getElementById(ids.bufferedId);
+    const playBtn = document.getElementById(ids.playBtnId);
+    const bigPlay = document.getElementById(ids.bigPlayId);
 
-    if (!video || !fallback) return;
+    if (!video || !controls) return;
 
-    // Try to detect if the video source is available
+    const wrapper = video.closest('.video-wrapper');
+    const iconPlay = playBtn.querySelector('.cv-icon-play');
+    const iconPause = playBtn.querySelector('.cv-icon-pause');
+    const rewindBtn = controls.querySelector('.cv-rewind-btn');
+    const forwardBtn = controls.querySelector('.cv-forward-btn');
+    const muteBtn = controls.querySelector('.cv-mute-btn');
+    const iconVol = muteBtn.querySelector('.cv-icon-vol');
+    const iconMuted = muteBtn.querySelector('.cv-icon-muted');
+    const volumeSlider = controls.querySelector('.cv-volume-slider');
+    const fullscreenBtn = controls.querySelector('.cv-fullscreen-btn');
+    const timeCurrent = controls.querySelector('.cv-time-current');
+    const timeDuration = controls.querySelector('.cv-time-duration');
+
+    let isDragging = false;
+    let hideControlsTimer = null;
+
+    // --- Fallback Logic (preserved from original) ---
     const source = video.querySelector('source');
-    if (!source) {
-        fallback.classList.remove('hidden');
-        return;
+    if (fallback) {
+        if (!source) {
+            fallback.classList.remove('hidden');
+            return;
+        }
+        video.addEventListener('loadedmetadata', () => fallback.classList.add('hidden'));
+        video.addEventListener('canplay', () => fallback.classList.add('hidden'));
+        video.addEventListener('error', () => fallback.classList.remove('hidden'));
+        source.addEventListener('error', () => fallback.classList.remove('hidden'));
+        setTimeout(() => {
+            if (video.readyState < 1) fallback.classList.remove('hidden');
+        }, 3000);
     }
 
-    // When video metadata loads, hide fallback
-    video.addEventListener('loadedmetadata', () => {
-        fallback.classList.add('hidden');
-    });
+    // --- Helper: format time ---
+    function formatTime(sec) {
+        if (!isFinite(sec) || isNaN(sec)) return '0:00';
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = Math.floor(sec % 60);
+        if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        return `${m}:${String(s).padStart(2, '0')}`;
+    }
 
-    // When video can play, hide fallback
-    video.addEventListener('canplay', () => {
-        fallback.classList.add('hidden');
-    });
-
-    // On error, show fallback
-    video.addEventListener('error', () => {
-        fallback.classList.remove('hidden');
-    });
-
-    source.addEventListener('error', () => {
-        fallback.classList.remove('hidden');
-    });
-
-    // Timeout fallback — if video hasn't loaded in 3 seconds, show fallback
-    setTimeout(() => {
-        if (video.readyState < 1) {
-            fallback.classList.remove('hidden');
+    // --- Play / Pause ---
+    function togglePlay() {
+        if (video.paused || video.ended) {
+            video.play();
+        } else {
+            video.pause();
         }
-    }, 3000);
+    }
+
+    function updatePlayState() {
+        const playing = !video.paused && !video.ended;
+        iconPlay.style.display = playing ? 'none' : '';
+        iconPause.style.display = playing ? '' : 'none';
+        if (bigPlay) {
+            bigPlay.classList.toggle('hidden', playing);
+        }
+    }
+
+    video.addEventListener('play', updatePlayState);
+    video.addEventListener('pause', updatePlayState);
+    video.addEventListener('ended', updatePlayState);
+
+    playBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
+    if (bigPlay) bigPlay.addEventListener('click', togglePlay);
+
+    // Click on video to toggle play (but not on controls)
+    wrapper.addEventListener('click', (e) => {
+        if (e.target.closest('.custom-video-controls') || e.target.closest('.cv-big-play-overlay')) return;
+        togglePlay();
+    });
+
+    // --- Progress Bar ---
+    function updateProgress() {
+        if (isDragging || !isFinite(video.duration)) return;
+        const pct = (video.currentTime / video.duration) * 100;
+        progressFilled.style.width = pct + '%';
+        timeCurrent.textContent = formatTime(video.currentTime);
+    }
+
+    function updateBuffered() {
+        if (!isFinite(video.duration) || video.buffered.length === 0) return;
+        const buffEnd = video.buffered.end(video.buffered.length - 1);
+        bufferedBar.style.width = (buffEnd / video.duration) * 100 + '%';
+    }
+
+    video.addEventListener('timeupdate', updateProgress);
+    video.addEventListener('progress', updateBuffered);
+    video.addEventListener('loadedmetadata', () => {
+        timeDuration.textContent = formatTime(video.duration);
+    });
+    // Also set duration when it becomes available later (e.g. streaming)
+    video.addEventListener('durationchange', () => {
+        timeDuration.textContent = formatTime(video.duration);
+    });
+
+    // --- Seek via progress bar ---
+    function seek(e) {
+        const rect = progressBar.getBoundingClientRect();
+        const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        video.currentTime = pos * video.duration;
+        progressFilled.style.width = (pos * 100) + '%';
+    }
+
+    progressBar.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        progressBar.classList.add('cv-dragging');
+        seek(e);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) seek(e);
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            progressBar.classList.remove('cv-dragging');
+        }
+    });
+
+    // Touch support for progress bar
+    progressBar.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        progressBar.classList.add('cv-dragging');
+        seek(e.touches[0]);
+    }, { passive: true });
+
+    progressBar.addEventListener('touchmove', (e) => {
+        if (isDragging) seek(e.touches[0]);
+    }, { passive: true });
+
+    progressBar.addEventListener('touchend', () => {
+        isDragging = false;
+        progressBar.classList.remove('cv-dragging');
+    });
+
+    // --- Rewind / Forward ---
+    rewindBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        video.currentTime = Math.max(0, video.currentTime - 10);
+    });
+    forwardBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        video.currentTime = Math.min(video.duration, video.currentTime + 10);
+    });
+
+    // --- Volume ---
+    volumeSlider.addEventListener('input', (e) => {
+        e.stopPropagation();
+        video.volume = parseFloat(volumeSlider.value);
+        video.muted = false;
+        updateMuteIcon();
+    });
+
+    muteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        video.muted = !video.muted;
+        if (video.muted) {
+            volumeSlider.value = 0;
+        } else {
+            volumeSlider.value = video.volume || 1;
+        }
+        updateMuteIcon();
+    });
+
+    function updateMuteIcon() {
+        const muted = video.muted || video.volume === 0;
+        iconVol.style.display = muted ? 'none' : '';
+        iconMuted.style.display = muted ? '' : 'none';
+    }
+
+    // --- Fullscreen ---
+    fullscreenBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (document.fullscreenElement === wrapper) {
+            document.exitFullscreen();
+        } else if (wrapper.requestFullscreen) {
+            wrapper.requestFullscreen();
+        } else if (wrapper.webkitRequestFullscreen) {
+            wrapper.webkitRequestFullscreen();
+        }
+    });
+
+    // --- Auto-hide controls ---
+    function showControls() {
+        wrapper.classList.add('cv-show-controls');
+        clearTimeout(hideControlsTimer);
+        if (!video.paused) {
+            hideControlsTimer = setTimeout(() => {
+                wrapper.classList.remove('cv-show-controls');
+            }, 3000);
+        }
+    }
+
+    wrapper.addEventListener('mousemove', showControls);
+    wrapper.addEventListener('touchstart', showControls, { passive: true });
+    video.addEventListener('pause', () => {
+        wrapper.classList.add('cv-show-controls');
+        clearTimeout(hideControlsTimer);
+    });
+    video.addEventListener('play', () => {
+        showControls();
+    });
+
+    // --- Keyboard shortcuts (when wrapper is focused or hovered) ---
+    wrapper.setAttribute('tabindex', '0');
+    wrapper.addEventListener('keydown', (e) => {
+        switch (e.key) {
+            case ' ':
+            case 'k':
+                e.preventDefault();
+                togglePlay();
+                break;
+            case 'ArrowLeft':
+                e.preventDefault();
+                video.currentTime = Math.max(0, video.currentTime - 10);
+                showControls();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                video.currentTime = Math.min(video.duration, video.currentTime + 10);
+                showControls();
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                video.volume = Math.min(1, video.volume + 0.1);
+                volumeSlider.value = video.volume;
+                updateMuteIcon();
+                showControls();
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                video.volume = Math.max(0, video.volume - 0.1);
+                volumeSlider.value = video.volume;
+                updateMuteIcon();
+                showControls();
+                break;
+            case 'm':
+                video.muted = !video.muted;
+                volumeSlider.value = video.muted ? 0 : video.volume;
+                updateMuteIcon();
+                showControls();
+                break;
+            case 'f':
+                fullscreenBtn.click();
+                break;
+        }
+    });
 }
 
 /* -------------------------------------------- */
@@ -261,18 +503,13 @@ function initSlideDeck() {
     /* ---- load pdf.js & initialise ---- */
     function tryInit() {
         if (typeof pdfjsLib === 'undefined') {
-            /* pdf.js loaded as ES-module; import it */
-            import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs').then(function (mod) {
-                window.pdfjsLib = mod;
-                window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-                    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
-                loadPdf();
-            });
-        } else {
-            window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
-            loadPdf();
+            /* pdf.js not yet available — should not happen with the <script> tag in <head> */
+            console.error('pdf.js failed to load');
+            return;
         }
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        loadPdf();
     }
 
     function loadPdf() {
@@ -281,6 +518,8 @@ function initSlideDeck() {
             totalPages = pdf.numPages;
             updateUI();
             renderPage(1);
+        }).catch(function (err) {
+            console.error('pdf.js failed to load document:', err);
         });
     }
 

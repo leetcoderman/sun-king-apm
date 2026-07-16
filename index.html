@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 
 <body>
@@ -193,10 +193,91 @@
 
             <div class="video-card fade-up">
                 <div class="video-wrapper" id="walkthrough-video-wrapper">
-                    <video id="walkthrough-video" controls preload="metadata" poster="">
-                        <source src="assets/walkthrough.mp4" type="video/mp4">
+                    <video id="walkthrough-video" preload="metadata" playsinline poster="assets/thumbnail-1.png">
+                        <source src="assets/esb-video-walkthrough.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
+                    <!-- Custom Video Controls -->
+                    <div class="custom-video-controls" id="walkthrough-controls">
+                        <div class="cv-progress-bar" id="walkthrough-progress-bar">
+                            <div class="cv-progress-buffered" id="walkthrough-buffered"></div>
+                            <div class="cv-progress-filled" id="walkthrough-progress-filled">
+                                <span class="cv-progress-handle"></span>
+                            </div>
+                        </div>
+                        <div class="cv-controls-row">
+                            <div class="cv-controls-left">
+                                <button class="cv-btn cv-play-btn" id="walkthrough-play-btn" aria-label="Play">
+                                    <svg class="cv-icon-play" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                                    </svg>
+                                    <svg class="cv-icon-pause" viewBox="0 0 24 24" fill="currentColor"
+                                        style="display:none">
+                                        <rect x="5" y="3" width="4" height="18"></rect>
+                                        <rect x="15" y="3" width="4" height="18"></rect>
+                                    </svg>
+                                </button>
+                                <button class="cv-btn cv-rewind-btn" aria-label="Rewind 10 seconds">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 4v6h6"></path>
+                                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path><text x="12" y="15.5"
+                                            fill="currentColor" stroke="none" font-size="7" text-anchor="middle"
+                                            font-weight="700">10</text>
+                                    </svg>
+                                </button>
+                                <button class="cv-btn cv-forward-btn" aria-label="Forward 10 seconds">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M23 4v6h-6"></path>
+                                        <path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"></path><text x="12" y="15.5"
+                                            fill="currentColor" stroke="none" font-size="7" text-anchor="middle"
+                                            font-weight="700">10</text>
+                                    </svg>
+                                </button>
+                                <span class="cv-time"><span class="cv-time-current">0:00</span> / <span
+                                        class="cv-time-duration">0:00</span></span>
+                            </div>
+                            <div class="cv-controls-right">
+                                <button class="cv-btn cv-mute-btn" aria-label="Mute">
+                                    <svg class="cv-icon-vol" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                        <path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round"></path>
+                                        <path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round"></path>
+                                    </svg>
+                                    <svg class="cv-icon-muted" viewBox="0 0 24 24" fill="currentColor"
+                                        style="display:none">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                        <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round"></line>
+                                        <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round"></line>
+                                    </svg>
+                                </button>
+                                <input type="range" class="cv-volume-slider" min="0" max="1" step="0.05" value="1"
+                                    aria-label="Volume">
+                                <button class="cv-btn cv-fullscreen-btn" aria-label="Fullscreen">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <polyline points="9 21 3 21 3 15"></polyline>
+                                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Big center play button overlay -->
+                    <div class="cv-big-play-overlay" id="walkthrough-big-play">
+                        <div class="cv-big-play-btn">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                            </svg>
+                        </div>
+                    </div>
                     <!-- Fallback overlay when video isn't available -->
                     <div class="video-fallback" id="walkthrough-fallback">
                         <div class="video-fallback-icon">
@@ -208,7 +289,7 @@
                         <p class="video-fallback-text">Video will be available shortly</p>
                     </div>
                 </div>
-                <p class="video-context">A 4-minute walkthrough of how a routine bug fix turned into a company-wide
+                <p class="video-context">A 6-minute walkthrough of how a routine bug fix turned into a company-wide
                     systems redesign.</p>
             </div>
 
@@ -663,10 +744,91 @@
 
                 <div class="video-card">
                     <div class="video-wrapper" id="dexter-video-wrapper">
-                        <video id="dexter-video" controls preload="metadata" poster="">
-                            <source src="assets/dexterai.mp4" type="video/mp4">
+                        <video id="dexter-video" preload="metadata" playsinline poster="assets/dexterAI-1.png">
+                            <source src="assets/dexterAI-walkthrough.mov" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <!-- Custom Video Controls -->
+                        <div class="custom-video-controls" id="dexter-controls">
+                            <div class="cv-progress-bar" id="dexter-progress-bar">
+                                <div class="cv-progress-buffered" id="dexter-buffered"></div>
+                                <div class="cv-progress-filled" id="dexter-progress-filled">
+                                    <span class="cv-progress-handle"></span>
+                                </div>
+                            </div>
+                            <div class="cv-controls-row">
+                                <div class="cv-controls-left">
+                                    <button class="cv-btn cv-play-btn" id="dexter-play-btn" aria-label="Play">
+                                        <svg class="cv-icon-play" viewBox="0 0 24 24" fill="currentColor">
+                                            <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                                        </svg>
+                                        <svg class="cv-icon-pause" viewBox="0 0 24 24" fill="currentColor"
+                                            style="display:none">
+                                            <rect x="5" y="3" width="4" height="18"></rect>
+                                            <rect x="15" y="3" width="4" height="18"></rect>
+                                        </svg>
+                                    </button>
+                                    <button class="cv-btn cv-rewind-btn" aria-label="Rewind 10 seconds">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 4v6h6"></path>
+                                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path><text x="12" y="15.5"
+                                                fill="currentColor" stroke="none" font-size="7" text-anchor="middle"
+                                                font-weight="700">10</text>
+                                        </svg>
+                                    </button>
+                                    <button class="cv-btn cv-forward-btn" aria-label="Forward 10 seconds">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M23 4v6h-6"></path>
+                                            <path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"></path><text x="12" y="15.5"
+                                                fill="currentColor" stroke="none" font-size="7" text-anchor="middle"
+                                                font-weight="700">10</text>
+                                        </svg>
+                                    </button>
+                                    <span class="cv-time"><span class="cv-time-current">0:00</span> / <span
+                                            class="cv-time-duration">0:00</span></span>
+                                </div>
+                                <div class="cv-controls-right">
+                                    <button class="cv-btn cv-mute-btn" aria-label="Mute">
+                                        <svg class="cv-icon-vol" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                            <path d="M15.54 8.46a5 5 0 010 7.07" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round"></path>
+                                            <path d="M19.07 4.93a10 10 0 010 14.14" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round"></path>
+                                        </svg>
+                                        <svg class="cv-icon-muted" viewBox="0 0 24 24" fill="currentColor"
+                                            style="display:none">
+                                            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                            <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round"></line>
+                                            <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round"></line>
+                                        </svg>
+                                    </button>
+                                    <input type="range" class="cv-volume-slider" min="0" max="1" step="0.05" value="1"
+                                        aria-label="Volume">
+                                    <button class="cv-btn cv-fullscreen-btn" aria-label="Fullscreen">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Big center play button overlay -->
+                        <div class="cv-big-play-overlay" id="dexter-big-play">
+                            <div class="cv-big-play-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                                </svg>
+                            </div>
+                        </div>
                         <div class="video-fallback" id="dexter-fallback">
                             <div class="video-fallback-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
