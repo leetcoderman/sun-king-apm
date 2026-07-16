@@ -154,9 +154,13 @@ function initCustomVideoPlayer(ids) {
         video.addEventListener('canplay', () => fallback.classList.add('hidden'));
         video.addEventListener('error', () => fallback.classList.remove('hidden'));
         source.addEventListener('error', () => fallback.classList.remove('hidden'));
-        setTimeout(() => {
-            if (video.readyState < 1) fallback.classList.remove('hidden');
-        }, 3000);
+        // Only show the fallback after a timeout if the video is actually trying to load.
+        // If preload="none", the video hasn't started loading yet — don't show an error.
+        if (video.getAttribute('preload') !== 'none') {
+            setTimeout(() => {
+                if (video.readyState < 1) fallback.classList.remove('hidden');
+            }, 10000);
+        }
     }
 
     // --- Helper: format time ---
@@ -193,6 +197,28 @@ function initCustomVideoPlayer(ids) {
 
     playBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
     if (bigPlay) bigPlay.addEventListener('click', togglePlay);
+
+    // For preload="none" videos: start loading on hover so buffering begins
+    // before the user clicks play, reducing perceived wait time.
+    if (video.getAttribute('preload') === 'none') {
+        let loadStarted = false;
+        wrapper.addEventListener('mouseenter', () => {
+            if (!loadStarted) {
+                loadStarted = true;
+                video.load();
+            }
+        }, { once: true });
+
+        // After play is pressed, if video still hasn't loaded after 10s, show fallback
+        video.addEventListener('play', () => {
+            if (fallback) {
+                const postPlayTimer = setTimeout(() => {
+                    if (video.readyState < 2) fallback.classList.remove('hidden');
+                }, 10000);
+                video.addEventListener('canplay', () => clearTimeout(postPlayTimer), { once: true });
+            }
+        }, { once: true });
+    }
 
     // Click on video to toggle play (but not on controls)
     wrapper.addEventListener('click', (e) => {
