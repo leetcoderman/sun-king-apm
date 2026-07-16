@@ -143,23 +143,21 @@ function initCustomVideoPlayer(ids) {
     let isDragging = false;
     let hideControlsTimer = null;
 
-    // --- Fallback Logic (preserved from original) ---
+    // --- Fallback Logic ---
+    // Fallback starts hidden in HTML. Only show it on genuine errors.
     const source = video.querySelector('source');
     if (fallback) {
         if (!source) {
             fallback.classList.remove('hidden');
             return;
         }
-        video.addEventListener('loadedmetadata', () => fallback.classList.add('hidden'));
-        video.addEventListener('canplay', () => fallback.classList.add('hidden'));
         video.addEventListener('error', () => fallback.classList.remove('hidden'));
         source.addEventListener('error', () => fallback.classList.remove('hidden'));
-        // Only show the fallback after a timeout if the video is actually trying to load.
-        // If preload="none", the video hasn't started loading yet — don't show an error.
+        // Safety net: if video hasn't loaded metadata after 15s of attempting, show fallback
         if (video.getAttribute('preload') !== 'none') {
             setTimeout(() => {
                 if (video.readyState < 1) fallback.classList.remove('hidden');
-            }, 10000);
+            }, 15000);
         }
     }
 
